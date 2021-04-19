@@ -1,7 +1,40 @@
-export default function Recipes() {
+import { RecipeCard } from "../components/Recipe/Recipe_Card";
+import client from "../utils/contentful";
+
+export const getStaticProps = async () => {
+  try {
+    const recipes = await client.getEntries({ content_type: "marmiteNinja" });
+    return {
+      props: {
+        recipes: recipes.items,
+      },
+    };
+  } catch (error) {
+    return {
+      props: {
+        error: error.message,
+      },
+    };
+  }
+};
+export default function Recipes({ recipes, error }) {
+  if (error) {
+    return <h4>{error}</h4>;
+  }
   return (
     <div className="recipe-list">
-      Recipe List
+      {recipes.map((recipe) => (
+        <RecipeCard key={recipe.sys.id} {...recipe.fields} />
+      ))}
+      <style jsx>
+        {`
+          .recipe-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 20px 60px;
+          }
+        `}
+      </style>
     </div>
-  )
+  );
 }
