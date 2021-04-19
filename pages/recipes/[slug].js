@@ -1,6 +1,8 @@
 import client from "../../utils/contentful";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
+import { Skeleton } from "../../components/skeleton";
 
 export const getStaticPaths = async () => {
   const recipes = await client.getEntries({ content_type: "marmiteNinja" });
@@ -9,7 +11,7 @@ export const getStaticPaths = async () => {
   }));
   return {
     paths,
-    fallback: false,
+    fallback: true,
   };
 };
 
@@ -20,10 +22,19 @@ export const getStaticProps = async (context) => {
       content_type: "marmiteNinja",
       "fields.slug": slug,
     });
+    if (!recipe.items.length) {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
+    }
     return {
       props: {
         recipe: recipe.items[0],
       },
+      revalidate: 1,
     };
   } catch (error) {
     return {
@@ -34,7 +45,13 @@ export const getStaticProps = async (context) => {
   }
 };
 
-export default function RecipeDetails({ recipe }) {
+export default function RecipeDetails({ recipe, error }) {
+  const { isFallback } = useRouter();
+
+  if (isFallback) {
+    return <Skeleton />;
+  }
+
   const {
     ingredients,
     cookingTime,
@@ -42,6 +59,11 @@ export default function RecipeDetails({ recipe }) {
     featuredImage,
     method,
   } = recipe.fields;
+
+  if (error) {
+    return <h4>{error}</h4>;
+  }
+
   return (
     <div>
       <div className="banner">

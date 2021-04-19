@@ -4,6 +4,14 @@ import client from "../utils/contentful";
 export const getStaticProps = async () => {
   try {
     const recipes = await client.getEntries({ content_type: "marmiteNinja" });
+    if (!recipes.items.length) {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
+    }
     return {
       props: {
         recipes: recipes.items,
@@ -14,6 +22,7 @@ export const getStaticProps = async () => {
       props: {
         error: error.message,
       },
+      revalidate: 1,
     };
   }
 };
