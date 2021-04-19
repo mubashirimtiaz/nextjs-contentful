@@ -16,13 +16,13 @@ export const getStaticProps = async () => {
       props: {
         recipes: recipes.items,
       },
+      revalidate: 1,
     };
   } catch (error) {
     return {
       props: {
         error: error.message,
       },
-      revalidate: 1,
     };
   }
 };
