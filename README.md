@@ -1,5 +1,9 @@
 This is the Next.js starter site (and course files) for the Next.js & Contentful tutorial by the Net Ninja.
 
+## Application URL
+
+Link: https://nextjs-contentful-mubashirimtiaz.vercel.app/
+
 ## Getting Started
 
 To use the starter project, run the following in a terminal:
