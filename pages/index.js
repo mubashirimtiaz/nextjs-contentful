@@ -1,4 +1,4 @@
-import { RecipeCard } from "../components/Recipe/Recipe_Card";
+import { RecipeCard } from "../components/recipe/recipe_card";
 import client from "../utils/contentful";
 
 export const getStaticProps = async () => {
