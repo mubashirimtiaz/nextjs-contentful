@@ -1,8 +1,8 @@
-import client from "../../utils/contentful";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import client from "@utils/contentful";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
-import { Skeleton } from "../../components/skeleton";
+import { Skeleton } from "@components/skeleton";
 
 export const getStaticPaths = async () => {
   const recipes = await client.getEntries({ content_type: "marmiteNinja" });
